@@ -85,7 +85,7 @@ Alle Eingaben und Zwischenergebnisse liegen im Projektordner (`settings.json`, `
 | Einzelbäume | dunkle/rosa Kronen-Flecken (Multiskalen-DoG), Kronengröße aus der Fleckgröße; Baumart „auto“ wählt das Laub nach dem Farbton der Krone (rosa → Kirsche, türkis → Fichte, gelbgrün → Birke/Akazie, dunkel → Schwarzeiche, sonst Eiche) | die Karte zeigt keine Baumart, nur die Farbe; in der Blockzuordnung fest einstellbar |
 | Bunte Baumkronen vs. Häuser | lila/pinke/magenta Einzelobjekte, in denen der Baumdetektor eine Krone findet, sind Bäume und keine Häuser | ein lila Dach mit Baum direkt darauf würde ebenfalls als Baum gelten |
 | Gebäude | Dächer = Bereiche, die sich farblich vom Pflaster der Stadt abheben; einzelne Häuser außerhalb = kompakte, einfarbige Flecken mit Kontrast zur Umgebung; Dachblock aus Dachfarbe | **Höhe/Stockwerke stehen nicht im Bild** → geschätzt und markiert; Innenräume schlicht (Boden, Fenster, Tür, Leiter, Laterne) |
-| Höhen | Küstenabstand + Geländeklasse (Berge in der Mitte von Felsflächen) + optionale Schattierung | **Schätzung** – für exakte Höhen eine Höhenkarte importieren oder mit dem Pinsel korrigieren |
+| Höhen | Abstand zum Meer + Täler an Flüssen/Seen + Geländeklasse (Berge in der Mitte von Felsflächen) + Schattierung der Karte (Bäume, Icons, Städte und Klassenfarben werden vorher herausgerechnet) + Städte als ebene Plateaus | **Schätzung** – für exakte Höhen eine Höhenkarte importieren oder mit dem Pinsel korrigieren. Qualität messen: `python -m map2mc.heightbench` |
 
 `map2mc_report.json` im Weltordner listet geschätzte und zu prüfende Bereiche.
 
@@ -110,6 +110,7 @@ map2mc/
   imageio.py    Bild laden & prüfen
   analysis.py   Klassifizierung, Bereinigung, Gewässer, Brücken, Bäume, Gebäude
   terrain.py    Höhenmodell, Seen, Höhen-Edits
+  heightbench.py  Messung der Höhenschätzung an künstlichen Inseln mit bekannten Höhen
   features.py   deterministisches Rauschen, Baumformen, Häuser, Plattformen
   generator.py  Regionen parallel erzeugen, Fortsetzen
   anvil.py      Chunk-/Region-Writer (DataVersion 4671)

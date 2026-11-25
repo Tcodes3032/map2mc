@@ -279,5 +279,25 @@ class TestEndToEnd(unittest.TestCase):
             shutil.rmtree(d, ignore_errors=True)
 
 
+class TestHeights(unittest.TestCase):
+    """Height estimate without a height map, on synthetic islands with known heights."""
+
+    def test_estimate_matches_truth(self):
+        from map2mc import heightbench
+        r = heightbench.run(seeds=(7, 11), size=256)
+        self.assertGreater(r["corr"], 0.85, r)        # shape of the terrain is recovered
+        self.assertLess(r["streaks"], 0.3, r)         # no diagonal stripe artefacts
+        self.assertLess(r["pits"], 0.05, r)           # tree dots do not dig holes
+        self.assertLess(r["river"], 0.15, r)          # a river does not flatten the whole inland
+
+    def test_town_stays_flat(self):
+        from map2mc import heightbench, terrain
+        from map2mc.config import Settings
+        img, st, truth, info = heightbench.make_island(256, 7)
+        h, _ = terrain.compute_heights(img, st, Settings())
+        town = info["town"] & st.land
+        self.assertLess(float(np.percentile(h[town], 90) - np.percentile(h[town], 10)), 4.0)
+
+
 if __name__ == "__main__":
     unittest.main()

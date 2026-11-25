@@ -1,0 +1,24 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  unittest:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: pip install "numpy>=2.0" "opencv-python-headless>=4.9" "pillow>=10.0" "py7zr>=0.22"
+      - name: Unit tests
+        run: python -m unittest discover -s tests -v
+      - name: Height benchmark
+        run: python -m map2mc.heightbench

@@ -1,0 +1,8 @@
+.venv/
+_out/
+__pycache__/
+*.pyc
+*.tmp
+treepacks/
+map2mc_log.txt
+samples/
